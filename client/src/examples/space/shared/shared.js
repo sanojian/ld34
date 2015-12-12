@@ -54,11 +54,11 @@ function updateAll(clients) {
 
 			// check world bounds
 			if (ship.position.x < 0 || ship.position.x > world.width) {
-				ship.velocity.x = 0;
+				ship.velocity.x = -ship.velocity.x;
 				ship.position.x = Math.min(world.width, Math.max(0, ship.position.x));
 			}
 			if (ship.position.y < 0 || ship.position.y > world.height) {
-				ship.velocity.y = 0;
+				ship.velocity.y = -ship.velocity.y;
 				ship.position.y = Math.min(world.height, Math.max(0, ship.position.y));
 			}
 		}

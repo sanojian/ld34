@@ -7,7 +7,6 @@ ServerRTC_Client.prototype.startP2P = function() {
 	var self = this;
 
 	// Call XirSys ICE servers
-	// TODO: move to server side to hide this
 	$.ajax({
 		type: "POST",
 		dataType: "json",

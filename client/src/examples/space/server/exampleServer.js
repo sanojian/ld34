@@ -71,17 +71,19 @@ RpgServer.prototype = Object.create(ServerRTC.prototype);
 RpgServer.prototype.constructor = RpgServer;
 
 var posX = 100;
-var clientColors = ['#E06F8B', '#31A2F2', '#A3CE27', '#EB8931', '#F7E26B'];
-var colorCursor = 0;
 
 RpgServer.prototype.clientJoined = function(clientId) {
 	var ship = new Ship();
-	ship.position.x = posX;
-	ship.position.y = 100;
-	ship.color = clientColors[colorCursor];
+	resetShip(ship);
+
+	var red = Math.floor(55 + Math.random() * 160);
+	var green = Math.floor(55 + Math.random() * 160);
+	var blue = Math.floor(55 + Math.random() * 160);
+	var color = 'rgb(' + red + ',' + green + ',' + blue + ')';
+
+	ship.color = color;
 	this.clients[clientId].ship = ship;
 
-	colorCursor = (colorCursor + 1) % clientColors.length;
 
 	var data = {
 		clientId: clientId,
@@ -115,6 +117,9 @@ RpgServer.prototype.clientJoined = function(clientId) {
 			this.clients[key].conn.send({ event: 'newclient', data: data });
 		}
 	}
+
+	// inform client of existing dots
+	this.clients[clientId].conn.send({ event: 'initDots', data: dots });
 
 	posX += 60;
 };
@@ -200,6 +205,7 @@ function makePositionMessage(ship, clientId) {
 			position: ship.position,
 			velocity: ship.velocity,
 			throttle: ship.throttle,
+			size: ship.size,
 			angle: ship.angle,
 			turn: ship.turn
 		}
@@ -222,8 +228,8 @@ function handleCollision(ship, clientId) {
 }
 
 function resetShip(ship) {
-	ship.position.x = 100;
-	ship.position.y = 100;
+	ship.position.x = Math.floor(Math.random()*world.width);
+	ship.position.y = Math.floor(Math.random()*world.height);
 	ship.size = DEFS.SHIP_SIZE;
 	ship.alive = true;
 

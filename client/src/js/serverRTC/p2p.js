@@ -9,7 +9,6 @@ ServerRTC.prototype.startP2P = function() {
 	this.roomId = 'SpaceAmoeba_' + Math.random();
 
 	// Call XirSys ICE servers
-	// TODO: move to server side to hide this
 	$.ajax({
 		type: "POST",
 		dataType: "json",

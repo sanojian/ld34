@@ -68,6 +68,7 @@ RpgClient.prototype.updateShip = function(data) {
 	ship.velocity.x = data.velocity.x;
 	ship.velocity.y = data.velocity.y;
 	ship.angle = data.angle;
+	ship.size = data.size;
 	if (data.color) {
 		ship.color = data.color;
 	}
@@ -106,6 +107,10 @@ RpgClient.prototype.handleMessage = function(message) {
 	}
 	else if (message.event === 'newDot') {
 		dots.push(message.data);
+	}
+	else if (message.event === 'initDots') {
+		console.log(message);
+		dots = message.data;
 	}
 	else if (message.event === 'eatDot') {
 		client.ships[message.data.clientId].size++;
