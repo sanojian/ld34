@@ -1,0 +1,18 @@
+{
+	"name": "ld34",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"postinstall": "grunt build",
+		"start": "node ./server/serverRTC.js"
+	},
+	"dependencies": {
+		"express": "^4.13.3",
+		"socket.io": "^1.3.7",
+		"grunt": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-contrib-concat": "*",
+		"grunt-develop": "*",
+		"grunt-contrib-jshint": "*"
+	}
+}
