@@ -67,7 +67,7 @@ ServerRTC_Client.prototype.initP2PComm = function(customConfig) {
 
 		var gameSocket = io();
 
-		gameSocket.emit('requestGame', { clientPeerId: self.peerId, serverPeerId: gamePeerId });
+		gameSocket.emit('requestGame', { clientPeerId: self.peerId, serverPeerId: gamePeerId, playerName: self.playerName });
 
 		gameSocket.on('joiningServer', function(serverPeerId) {
 			console.log('joining server ' + serverPeerId);

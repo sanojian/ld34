@@ -6,6 +6,7 @@ var server;
 var world = { planets: []};
 var bullets = [];
 var dots = [];
+var nameLookup = {};
 function init() {
 	console.log('ho there');
 
@@ -86,15 +87,15 @@ RpgServer.prototype.clientJoined = function(clientId) {
 	var color = 'rgb(' + red + ',' + green + ',' + blue + ')';
 
 	ship.color = color;
+	ship.playerName = nameLookup[clientId];
 	this.clients[clientId].ship = ship;
-
 
 	var data = {
 		clientId: clientId,
 		color: ship.color,
 		position: ship.position,
+		playerName: ship.playerName,
 		angle: ship.angle,
-		turn: ship.turn,
 		velocity: ship.velocity
 	};
 	// inform client of self
@@ -112,8 +113,8 @@ RpgServer.prototype.clientJoined = function(clientId) {
 				color: oldShip.color,
 				position: oldShip.position,
 				angle: oldShip.angle,
+				playerName: oldShip.playerName,
 				throttle: oldShip.throttle,
-				turn: oldShip.turn,
 				velocity: oldShip.velocity
 			};
 			this.clients[clientId].conn.send({ event: 'newclient', data: oldData });

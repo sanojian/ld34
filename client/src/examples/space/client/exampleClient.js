@@ -4,7 +4,7 @@
 
 var ctx, canvas, client, world = { width: 640, height: 480, planets: [] };
 
-var mouseX, mouseY, gamePeerId, gameRoomId;
+var mouseX, mouseY, gamePeerId, gameRoomId, playerName;
 
 function init() {
 
@@ -12,13 +12,14 @@ function init() {
 		clearInterval(pollForGames);
 		gamePeerId = $(evt.target).attr('data-peerid');
 		gameRoomId = $(evt.target).attr('data-roomid');
-		$('div#serverList').remove();
+		playerName = $('#amoebaName').val() || 'unknown amoeba';
+		$('div#welcomeBox').remove();
 		initGame();
 	});
 
 	var pollForGames = setInterval(function() {
 		$.getJSON('/listServers', function(data) {
-			$('#serverList').html('<a href="./exampleServer.html">Start My Own Server!</a><br><br><u>Available Servers:</u>');
+			$('#serverList').html('');
 			for (var i=0; i<data.servers.length; i++) {
 				$('#serverList').append('<br><a class="serverItem" data-peerid="' + data.servers[i].peerId + '" data-roomid="' + data.servers[i].roomId + '">' +
 					data.servers[i].roomId + ' from ' + (data.servers[i].geo.city || '??') + ', ' + (data.servers[i].geo.country || '??') +
@@ -33,7 +34,7 @@ function initGame() {
 
 	initSteering();
 
-	client = new RpgClient();
+	client = new RpgClient(playerName);
 	client.startP2P();
 
 	canvas = document.getElementById('myCanvas');
@@ -62,9 +63,9 @@ function initGame() {
 	});
 }
 
-function RpgClient() {
+function RpgClient(playerName) {
 
-	ServerRTC_Client.call(this);
+	ServerRTC_Client.call(this, playerName);
 
 	this.ships = {};
 }
@@ -79,6 +80,7 @@ RpgClient.prototype.updateShip = function(data) {
 	ship.velocity.x = data.velocity.x;
 	ship.velocity.y = data.velocity.y;
 	ship.angle = data.angle;
+	ship.playerName = data.playerName || ship.playerName;
 	ship.size = data.size;
 	if (data.color) {
 		ship.color = data.color;
@@ -103,7 +105,7 @@ RpgClient.prototype.handleMessage = function(message) {
 	}
 	else if (message.event === 'newclient') {
 		this.updateShip(message.data);
-		console.log('added new client id ' + message.data.clientId);
+		console.log('added new player ' + message.data.playerName);
 	}
 	else if (message.event === 'position') {
 		this.updateShip(message.data);
@@ -120,7 +122,6 @@ RpgClient.prototype.handleMessage = function(message) {
 		dots.push(message.data);
 	}
 	else if (message.event === 'initDots') {
-		console.log(message);
 		dots = message.data;
 	}
 	else if (message.event === 'eatDot') {

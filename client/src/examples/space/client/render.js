@@ -117,6 +117,7 @@ function render() {
 
 	showParticles();
 
+	var leaderboard = [];
 	for (var key in client.ships) {
 		if (client.ships[key].alive) {
 			var ship = client.ships[key];
@@ -130,7 +131,21 @@ function render() {
 					ship.alive = 0;
 				}
 			}
+
+			if (frame % 61 === 0) {
+				leaderboard.push({ playerName: ship.playerName, size: ship.size });
+			}
 		}
+	}
+	if (frame % 61 === 0) {
+		leaderboard.sort(function(a, b) {
+			return b.size - a.size;
+		});
+		var leaderHtml = '<u>LeaderBoard</u><br><b>';
+		for (var i=0; i<leaderboard.length; i++) {
+			leaderHtml += leaderboard[i].playerName + '<br>';
+		}
+		$('#leaderBoard').html(leaderHtml + '</b>');
 	}
 
 	drawBullets();

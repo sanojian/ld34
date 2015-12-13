@@ -80,19 +80,16 @@ ServerRTC.prototype.initP2PComm = function(customConfig) {
 
 		// development
 		self.gameSocket = io();
-		// live
-		//self.gameSocket = io.connect('http://swat-fishpoo.rhcloud.com:8000');
-
 
 		self.gameSocket.emit('iAmServer', { peerId: self.peerId, roomId: self.roomId, ip: self.ip });
 
-		self.gameSocket.on('clientJoining', function(clientPeerId) {
-			console.log('client joined ' + clientPeerId);
-
-			var c = peer.connect(clientPeerId);
-			c.on('data', function(data) {
-				self.handleMessage(data, clientPeerId);
+		self.gameSocket.on('clientJoining', function(data) {
+			console.log('client joined ' + data.playerName);
+			var c = peer.connect(data.peerId);
+			c.on('data', function(messageData) {
+				self.handleMessage(messageData, data.peerId);
 			});
+			nameLookup[data.peerId] = data.playerName;
 		});
 	});
 };

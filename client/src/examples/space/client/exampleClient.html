@@ -21,17 +21,38 @@
             cursor: pointer;
             font-weight: bold;
         }
+        .serverItem:hover {
+            background-color: #ccccff;
+        }
 
-        #serverList {
+        #leaderBoard {
+            font-family: arial, helvetica, sans-serif;
+            color: #aaa;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 160px;
+            height: 200px;
+            overflow: hidden;
+            padding: 12px;
+        }
+
+        #welcomeBox {
             margin: 20px;
             padding: 20px;
         }
     </style>
 </head>
 <body onload="init()">
-    <div id="serverList">
-        loading...
+    <div id="welcomeBox">
+        <a href="./exampleServer.html">Start My Own Server!</a><br><br>
+        Splork! Enter your amoeba name: <input id="amoebaName" maxlength="16"><br><br>
+        <u>Click to join an available server</u>
+        <div id="serverList">
+            loading...
+        </div>
     </div>
     <canvas id="myCanvas"></canvas>
+    <div id="leaderBoard"></div>
 </body>
 </html>

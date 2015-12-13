@@ -85,7 +85,7 @@ io.on('connection', function(socket) {
 	socket.on('requestGame', function (data) {
 
 		// client requesting game from server
-		servers[data.serverPeerId].socket.emit('clientJoining', data.clientPeerId);
+		servers[data.serverPeerId].socket.emit('clientJoining', { peerId: data.clientPeerId, playerName: data.playerName });
 		servers[data.serverPeerId].players++;
 		socket.emit('joiningServer', data.serverPeerId);
 
