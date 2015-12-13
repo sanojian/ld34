@@ -6,7 +6,7 @@ ServerRTC.prototype.startP2P = function() {
 
 	var self = this;
 
-	this.roomId = 'SpaceAmoeba_' + Math.random();
+	this.roomId = 'SpaceAmoeba_' + Math.floor(Math.random()*10000);
 
 	// Call XirSys ICE servers
 	$.ajax({
@@ -64,6 +64,7 @@ ServerRTC.prototype.initP2PComm = function(customConfig) {
 		conn.on('close', function() {
 			console.log('peer data connection closed');
 			delete self.clients[clientId];
+			self.gameSocket.emit('playerLeftServer', { peerId: self.peerId });
 		});
 
 

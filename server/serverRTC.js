@@ -26,7 +26,12 @@ app.get('/getMyIp', function(req, res) {
 app.get('/listServers', function(req, res) {
 	var resp = { success: true, servers: [] };
 	for (var key in servers) {
-		resp.servers.push({ peerId: key, roomId: servers[key].roomId, geo: servers[key].geo });
+		resp.servers.push({
+			peerId: key,
+			roomId: servers[key].roomId,
+			geo: servers[key].geo,
+			players: servers[key].players
+		});
 	}
 
 	res.end(JSON.stringify(resp));
@@ -66,17 +71,22 @@ io.on('connection', function(socket) {
 
 			//the whole response has been recieved, so we just print it out here
 			resp.on('end', function () {
-				servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: JSON.parse(str) };
+				servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: JSON.parse(str), players: 0 };
 				console.log('server added: ' + myRoomId);
 			});
 
 		}).end();
 	});
 
+	socket.on('playerLeftServer', function (data) {
+		servers[data.peerId].players--;
+	});
+
 	socket.on('requestGame', function (data) {
 
 		// client requesting game from server
 		servers[data.serverPeerId].socket.emit('clientJoining', data.clientPeerId);
+		servers[data.serverPeerId].players++;
 		socket.emit('joiningServer', data.serverPeerId);
 
 		console.log('client joined: ' + data.clientPeerId);
