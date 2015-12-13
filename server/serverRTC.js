@@ -6,6 +6,7 @@ var express = require('express');
 var config = require('./config');
 var http = require('http');
 var path = require('path');
+var geoip = require('geoip-lite');
 
 var app = module.exports = express();
 
@@ -20,7 +21,7 @@ theApp.listen(app.get('port'));
 app.get('/listServers', function(req, res) {
 	var resp = { success: true, servers: [] };
 	for (var key in servers) {
-		resp.servers.push({ peerId: key, roomId: servers[key].roomId });
+		resp.servers.push({ peerId: key, roomId: servers[key].roomId, geo: servers[key].geo });
 	}
 
 	res.end(JSON.stringify(resp));
@@ -36,13 +37,16 @@ io.on('connection', function(socket) {
 	console.log('a user connected');
 
 	var myPeerId, myRoomId;
+	var myIp = socket.handshake.address;
 
 	socket.on('iAmServer', function(data) {
 
 		// server identifying itself
 		myPeerId = data.peerId;
 		myRoomId = data.roomId;
-		servers[myPeerId] = { socket: socket, roomId: myRoomId };
+		var geo = geoip.lookup(myIp);
+
+		servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: geo };
 		console.log('server added: ' + myRoomId);
 	});
 

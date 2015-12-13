@@ -33,16 +33,6 @@ function updateAll(clients) {
 				if (dist <= planet.r + ship.size) {
 					handleCollision(ship, key);
 				}
-				// platform collision
-				/*var cx = planet.x + Math.cos(planet.platformAngle)*planet.r;
-				 var cy = planet.y + Math.sin(planet.platformAngle)*planet.r;
-				 var distToPlatform =  Math.sqrt(Math.pow(ship.position.x - cx, 2) + Math.pow(ship.position.y - cy, 2));
-				 if (distToPlatform < 14) {
-				 ship.position.x = planet.x + Math.cos(planet.platformAngle) * (planet.r + 14);
-				 ship.position.y = planet.y + Math.sin(planet.platformAngle) * (planet.r + 14);
-				 ship.velocity.x = 12*force * Math.cos(angle);
-				 ship.velocity.y = 12*force * Math.sin(angle);
-				 }*/
 			}
 
 			// turning
@@ -54,11 +44,11 @@ function updateAll(clients) {
 
 			// check world bounds
 			if (ship.position.x < 0 || ship.position.x > world.width) {
-				ship.velocity.x = -ship.velocity.x;
+				ship.velocity.x = -ship.velocity.x/2;
 				ship.position.x = Math.min(world.width, Math.max(0, ship.position.x));
 			}
 			if (ship.position.y < 0 || ship.position.y > world.height) {
-				ship.velocity.y = -ship.velocity.y;
+				ship.velocity.y = -ship.velocity.y/2;
 				ship.position.y = Math.min(world.height, Math.max(0, ship.position.y));
 			}
 		}
@@ -80,8 +70,6 @@ function updateAll(clients) {
 
 				if (dist < 20) {
 					handleCollision(ship, key);
-					ship.position.x = 100;
-					ship.position.y = 100;
 					ship.velocity.x = 0;
 					ship.velocity.y = 0;
 				}

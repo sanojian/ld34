@@ -30,10 +30,15 @@ function drawClient(ship) {
 	//ctx.arc(sx + Math.cos(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), sy + Math.sin(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), ship.size/2, 0, 2 * Math.PI, false);
 	//ctx.fill();
 	//ctx.closePath();
-	//ctx.beginPath();
-	//ctx.arc(sx + Math.cos(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), sy + Math.sin(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), ship.size/2, 0, 2 * Math.PI, false);
-	//ctx.fill();
-	//ctx.closePath();
+	// arms
+	for (var i=0; i<6; i++) {
+		ctx.beginPath();
+		var ax = sx + Math.cos(Math.PI/12 + i*Math.PI/3) * 3*ship.size/4;
+		var ay = sy + Math.sin(Math.PI/12 + i*Math.PI/3) * 3*ship.size/4;
+		ctx.arc(ax + Math.cos(ship.angle) * ship.throttle * ship.size/6, ay + Math.sin(ship.angle) * ship.throttle * ship.size/6, ship.size / 2, 0, 2 * Math.PI, false);
+		ctx.fill();
+		ctx.closePath();
+	}
 
 	// eyeball
 	ctx.beginPath();
