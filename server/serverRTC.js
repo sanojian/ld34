@@ -45,8 +45,8 @@ io.on('connection', function(socket) {
 		myRoomId = data.roomId;
 
 		var options = {
-			host: 'freegeoip.net',
-			path: '/json/' + myIp
+			host: 'ipinfo.io',
+			path: '/' + myIp
 		};
 
 		// get geolocation of server
@@ -61,7 +61,7 @@ io.on('connection', function(socket) {
 
 			//the whole response has been recieved, so we just print it out here
 			resp.on('end', function () {
-				servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: str };
+				servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: JSON.parse(str) };
 				console.log('server added: ' + myRoomId);
 			});
 
