@@ -17,6 +17,7 @@ function drawDots() {
 		if (dist < myShip.size) {
 			// eat the dot
 			client.peerConnection.send({ event: 'eatDot', data: { x: dots[i].x, y: dots[i].y }});
+			setMood(myShip, 'eating');
 			dots.splice(i, 1);
 			i--;
 			myShip.size++;

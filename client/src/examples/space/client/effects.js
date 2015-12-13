@@ -52,3 +52,8 @@ function addParticle(x, y, color, size, speed, angle) {
 		});
 	}
 }
+
+function setMood(ship, mood) {
+	ship.mood = mood;
+	ship.moodTimer = 20;
+}

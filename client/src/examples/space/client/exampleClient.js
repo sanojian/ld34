@@ -63,6 +63,7 @@ function initGame() {
 	});
 }
 
+
 function RpgClient(playerName) {
 
 	ServerRTC_Client.call(this, playerName);
@@ -126,6 +127,7 @@ RpgClient.prototype.handleMessage = function(message) {
 	}
 	else if (message.event === 'eatDot') {
 		client.ships[message.data.clientId].size++;
+		setMood(client.ships[message.data.clientId], 'eating');
 		for (var i=0; i<dots.length; i++) {
 			if (dots[i].x === message.data.x && dots[i].y === message.data.y) {
 				dots.splice(i, 1);

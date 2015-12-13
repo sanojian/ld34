@@ -18,25 +18,64 @@ function drawClient(ship) {
 
 	ctx.fillStyle = ship.color;
 	ctx.beginPath();
-	//ctx.strokeStyle = '#999';
-	//ctx.lineWidth = 1;
 	ctx.arc(sx, sy, ship.size, 0, 2 * Math.PI, false);
 	ctx.fill();
-	//ctx.stroke();
 	ctx.closePath();
 
-	// show throttle
-	//ctx.beginPath();
-	//ctx.arc(sx + Math.cos(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), sy + Math.sin(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), ship.size/2, 0, 2 * Math.PI, false);
-	//ctx.fill();
-	//ctx.closePath();
 	// arms
 	for (var i=0; i<6; i++) {
 		ctx.beginPath();
 		var ax = sx + Math.cos(Math.PI/12 + i*Math.PI/3) * 3*ship.size/4;
 		var ay = sy + Math.sin(Math.PI/12 + i*Math.PI/3) * 3*ship.size/4;
-		ctx.arc(ax + Math.cos(ship.angle) * ship.throttle * ship.size/6, ay + Math.sin(ship.angle) * ship.throttle * ship.size/6, ship.size / 2, 0, 2 * Math.PI, false);
+		ctx.arc(ax + Math.cos(ship.angle) * ship.throttle * ship.size/3, ay + Math.sin(ship.angle) * ship.throttle * ship.size/3, ship.size / 3, 0, 2 * Math.PI, false);
 		ctx.fill();
+		ctx.closePath();
+	}
+
+	// mouth
+	var mx, my;
+	if (ship.mood === 'eating') {
+		if (ship.moodTimer > 14) {
+			ctx.beginPath();
+			ctx.fillStyle = '#222';
+			mx = sx + Math.cos(ship.angle)*ship.size/-2;
+			my = sy + Math.sin(ship.angle)*ship.size/-2;
+			ctx.arc(mx, my, ship.size/4, 0, 2*Math.PI, false);
+			ctx.fill();
+			ctx.closePath();
+		}
+		else {
+			ctx.beginPath();
+			ctx.strokeStyle = '#222';
+			ctx.lineWidth = ship.size/10;
+			mx = sx + Math.cos(ship.angle)*ship.size/-3;
+			my = sy + Math.sin(ship.angle)*ship.size/-3;
+			ctx.moveTo(mx, my);
+			ctx.lineTo(mx + Math.cos(ship.angle)*ship.size/-3, my + Math.sin(ship.angle)*ship.size/-3);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		ship.moodTimer--;
+		if (ship.moodTimer <= 0) {
+			ship.mood = null;
+		}
+	}
+	else {
+		// smile
+		ctx.beginPath();
+		ctx.fillStyle = '#222';
+		mx = sx + Math.cos(ship.angle)*ship.size/-2;
+		my = sy + Math.sin(ship.angle)*ship.size/-2;
+		ctx.arc(mx, my, ship.size/4, ship.angle, ship.angle+Math.PI, false);
+		ctx.fill();
+		ctx.closePath();
+		// tooth
+		ctx.beginPath();
+		ctx.strokeStyle = '#eee';
+		ctx.lineWidth = ship.size/10;
+		ctx.moveTo(mx, my);
+		ctx.lineTo(mx, my + Math.sin(ship.angle + Math.PI/2)*ship.size/8);
+		ctx.stroke();
 		ctx.closePath();
 	}
 
@@ -129,6 +168,7 @@ function render() {
 				if (dist < myShip.size) {
 					client.peerConnection.send({ event: 'eatShip', data: key });
 					ship.alive = 0;
+					setMood(myShip, 'eating');
 				}
 			}
 
