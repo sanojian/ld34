@@ -18,12 +18,23 @@ function drawClient(ship) {
 
 	ctx.fillStyle = ship.color;
 	ctx.beginPath();
-	ctx.strokeStyle = '#999';
-	ctx.lineWidth = 1;
+	//ctx.strokeStyle = '#999';
+	//ctx.lineWidth = 1;
 	ctx.arc(sx, sy, ship.size, 0, 2 * Math.PI, false);
 	ctx.fill();
-	ctx.stroke();
+	//ctx.stroke();
 	ctx.closePath();
+
+	// show throttle
+	//ctx.beginPath();
+	//ctx.arc(sx + Math.cos(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), sy + Math.sin(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), ship.size/2, 0, 2 * Math.PI, false);
+	//ctx.fill();
+	//ctx.closePath();
+	//ctx.beginPath();
+	//ctx.arc(sx + Math.cos(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), sy + Math.sin(ship.angle)*(ship.size/2 + ship.throttle*ship.size/2), ship.size/2, 0, 2 * Math.PI, false);
+	//ctx.fill();
+	//ctx.closePath();
+
 	// eyeball
 	ctx.beginPath();
 	ctx.fillStyle = '#eee';
@@ -37,7 +48,7 @@ function drawClient(ship) {
 	ctx.closePath();
 
 	if (ship.throttle && ship.frame % 10 === 0) {
-		addParticle(ship.position.x, ship.position.y, '#BE2633', 2, 0, 0);
+		addParticle(ship.position.x, ship.position.y, ship.color, 2, 0, 0);
 	}
 
 	ship.frame++;
