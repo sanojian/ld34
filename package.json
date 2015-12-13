@@ -13,6 +13,7 @@
 		"grunt-contrib-watch": "*",
 		"grunt-contrib-concat": "*",
 		"grunt-develop": "*",
+		"grunt-cli": "*",
 		"grunt-contrib-jshint": "*"
 	}
 }

@@ -150,7 +150,16 @@ RpgServer.prototype.handleMessage = function(message, clientId) {
 		// update all other clients
 		this.broadCast(newMessage);
 	}
-	if (message.event == 'eatDot') {
+	if (message.event == 'eatShip') {
+		var killerShip = this.clients[clientId].ship;
+		var eatenShip = this.clients[message.data].ship;
+		killerShip.size +=  eatenShip.size/4;
+		handleCollision(eatenShip, message.data);
+		newMessage = makePositionMessage(killerShip, clientId);
+		// update all other clients
+		this.broadCast(newMessage);
+	}
+	else if (message.event == 'eatDot') {
 		ship = this.clients[clientId].ship;
 		ship.size++;
 		newMessage = {

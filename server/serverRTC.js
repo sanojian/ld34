@@ -2,10 +2,6 @@
  * Created by jonas on 2015-12-12.
  */
 
-/**
- * Created by jonas on 2015-09-22.
- */
-
 var express = require('express');
 var config = require('./config');
 var http = require('http');
