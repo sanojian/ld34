@@ -18,7 +18,10 @@ theApp.listen(app.get('port'));
 
 // routes
 app.get('/getMyIp', function(req, res) {
-	res.end(JSON.stringify({ success: true, ip: req.ip }));
+	res.end(JSON.stringify({ success: true, ip: req.headers['x-forwarded-for'] ||
+		req.connection.remoteAddress ||
+		req.socket.remoteAddress ||
+		req.connection.socket.remoteAddress }));
 });
 app.get('/listServers', function(req, res) {
 	var resp = { success: true, servers: [] };
