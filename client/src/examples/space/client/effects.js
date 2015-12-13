@@ -57,3 +57,22 @@ function setMood(ship, mood) {
 	ship.mood = mood;
 	ship.moodTimer = 20;
 }
+
+function initPlanets() {
+	for (var i=0; i<world.planets.length; i++) {
+		var planet = world.planets[i];
+		planet.effect = {
+			spin: 0.1,
+			dist: 0,
+			lines: []
+		};
+		for (var j=0; j<3; j++) {
+			planet.effect.lines.push({
+				x: 0,
+				y: -10 + j*10,
+				width: 2 + Math.floor(Math.random()*4),
+				length: planet.r/4 + Math.floor(Math.random()*planet.r*2)
+			});
+		}
+	}
+}

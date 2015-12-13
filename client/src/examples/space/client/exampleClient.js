@@ -139,6 +139,7 @@ RpgClient.prototype.handleMessage = function(message) {
 	}
 	else if (message.event === 'world') {
 		world = message.data;
+		initPlanets();
 		//canvas.width = world.width;
 		//canvas.height = world.height;
 	}

@@ -101,19 +101,39 @@ function drawClient(ship) {
 function drawWorld() {
 
 	// clear rect
-	ctx.fillStyle = '#1B2632';
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	//ctx.fillStyle = '#1B2632';
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	var myShip = client.ships[client.peerId];
 
 	for (var i=0; i<world.planets.length; i++) {
 		// planet
-		var px = world.planets[i].x - myShip.position.x + canvas.width/2;
-		var py = world.planets[i].y - myShip.position.y + canvas.height/2;
+		var planet = world.planets[i];
+		var px = planet.x - myShip.position.x + canvas.width/2;
+		var py = planet.y - myShip.position.y + canvas.height/2;
 		ctx.beginPath();
-		ctx.fillStyle = world.planets[i].color;
-		ctx.arc(px, py, world.planets[i].r, 0, 2 * Math.PI, false);
+		ctx.fillStyle = planet.color;
+		ctx.arc(px, py, planet.r, 0, 2 * Math.PI, false);
 		ctx.fill();
+
+		// spin effects
+		/*ctx.globalCompositeOperation = 'source-atop';
+		for (var j=0; j<planet.effect.lines.length; j++) {
+			var line = planet.effect.lines[j];
+			ctx.beginPath();
+			ctx.strokeStyle = '#eee';
+			ctx.lineWidth = line.width;
+			ctx.moveTo(px - planet.r + line.x + planet.effect.dist, py + line.y);
+			ctx.lineTo(px + line.x + line.length + planet.effect.dist, py + line.y);
+			ctx.stroke();
+		}
+		planet.effect.dist += planet.effect.spin;
+		if (Math.ceil(planet.effect.dist) % planet.r*2 === 0) {
+			planet.effect.dist = 0;
+		}
+
+		/// reset composite mode to default
+		ctx.globalCompositeOperation = 'source-over';*/
 
 	}
 
