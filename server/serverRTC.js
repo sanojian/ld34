@@ -6,7 +6,6 @@ var express = require('express');
 var config = require('./config');
 var http = require('http');
 var path = require('path');
-var http = require('http');
 
 var app = module.exports = express();
 
@@ -18,6 +17,9 @@ var theApp = http.createServer(app);
 theApp.listen(app.get('port'));
 
 // routes
+app.get('/getMyIp', function(req, res) {
+	res.end(JSON.stringify({ success: true, ip: req.ip }));
+});
 app.get('/listServers', function(req, res) {
 	var resp = { success: true, servers: [] };
 	for (var key in servers) {
@@ -36,7 +38,7 @@ io.on('connection', function(socket) {
 	console.log('a user connected');
 
 	var myPeerId, myRoomId;
-	var myIp = socket.handshake.address;
+	//var myIp = socket.request.connection.remoteAddress;
 
 	socket.on('iAmServer', function(data) {
 
@@ -46,7 +48,7 @@ io.on('connection', function(socket) {
 
 		var options = {
 			host: 'ipinfo.io',
-			path: '/' + myIp
+			path: '/' + data.ip
 		};
 
 		// get geolocation of server

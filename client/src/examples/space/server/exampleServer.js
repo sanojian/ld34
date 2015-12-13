@@ -9,19 +9,23 @@ var dots = [];
 function init() {
 	console.log('ho there');
 
-	initWorld();
+	$.getJSON('/getMyIp', function(resp) {
 
-	server = new RpgServer();
+		initWorld();
 
-	server.startP2P();
+		server = new RpgServer(resp.ip);
 
-	setInterval(gameLoop, Math.floor(1000/60));
+		server.startP2P();
+
+		setInterval(gameLoop, Math.floor(1000/60));
+	});
 }
 
 function initWorld() {
 	world.width = 1600;
 	world.height = 1200;
 
+	// generate planets
 	for (var i=0; i<8; i++) {
 		var x = Math.floor(Math.random() * world.width);
 		var y = Math.floor(Math.random() * world.height);
@@ -62,9 +66,9 @@ function gameLoop() {
 	}
 }
 
-function RpgServer() {
+function RpgServer(ip) {
 
-	ServerRTC.call(this);
+	ServerRTC.call(this, ip);
 }
 
 RpgServer.prototype = Object.create(ServerRTC.prototype);

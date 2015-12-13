@@ -2,7 +2,8 @@
  * Created by jonas on 2015-12-12.
  */
 
-function ServerRTC() {
+function ServerRTC(ip) {
+	this.ip = ip;
 	this.clients = {};
 }
 

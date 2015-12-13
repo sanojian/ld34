@@ -83,7 +83,7 @@ ServerRTC.prototype.initP2PComm = function(customConfig) {
 		//self.gameSocket = io.connect('http://swat-fishpoo.rhcloud.com:8000');
 
 
-		self.gameSocket.emit('iAmServer', { peerId: self.peerId, roomId: self.roomId });
+		self.gameSocket.emit('iAmServer', { peerId: self.peerId, roomId: self.roomId, ip: self.ip });
 
 		self.gameSocket.on('clientJoining', function(clientPeerId) {
 			console.log('client joined ' + clientPeerId);
