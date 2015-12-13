@@ -54,6 +54,10 @@ function initGame() {
 		mouseX = e.originalEvent.touches[0].pageX;
 		mouseY = e.originalEvent.touches[0].pageY;
 	});
+	$(document).on('touchmove', function(e) {
+		mouseX = e.originalEvent.touches[0].pageX;
+		mouseY = e.originalEvent.touches[0].pageY;
+	});
 }
 
 function RpgClient() {
