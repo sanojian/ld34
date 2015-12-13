@@ -6,7 +6,7 @@ var express = require('express');
 var config = require('./config');
 var http = require('http');
 var path = require('path');
-var geoip = require('geoip-lite');
+var http = require('http');
 
 var app = module.exports = express();
 
@@ -30,7 +30,6 @@ app.get('/listServers', function(req, res) {
 // socket.io
 var io = require('socket.io')(theApp);
 
-
 var servers = {};
 
 io.on('connection', function(socket) {
@@ -44,10 +43,29 @@ io.on('connection', function(socket) {
 		// server identifying itself
 		myPeerId = data.peerId;
 		myRoomId = data.roomId;
-		var geo = geoip.lookup(myIp);
 
-		servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: geo };
-		console.log('server added: ' + myRoomId);
+		var options = {
+			host: 'freegeoip.net',
+			path: '/json/' + myIp
+		};
+
+		// get geolocation of server
+		http.request(options, function(resp) {
+
+			var str = '';
+
+			//another chunk of data has been recieved, so append it to `str`
+			resp.on('data', function (chunk) {
+				str += chunk;
+			});
+
+			//the whole response has been recieved, so we just print it out here
+			resp.on('end', function () {
+				servers[myPeerId] = { socket: socket, roomId: myRoomId, geo: str };
+				console.log('server added: ' + myRoomId);
+			});
+
+		}).end();
 	});
 
 	socket.on('requestGame', function (data) {

@@ -20,7 +20,8 @@ function init() {
 		$.getJSON('/listServers', function(data) {
 			$('#serverList').html('<a href="./exampleServer.html">Start My Own Server!</a><br><br><u>Available Servers:</u>');
 			for (var i=0; i<data.servers.length; i++) {
-				$('#serverList').append('<br><a class="serverItem" data-peerid="' + data.servers[i].peerId + '" data-roomid="' + data.servers[i].roomId + '">' + data.servers[i].roomId + '</a>');
+				$('#serverList').append('<br><a class="serverItem" data-peerid="' + data.servers[i].peerId + '" data-roomid="' + data.servers[i].roomId + '">' +
+					data.servers[i].roomId + ' from ' + data.servers[i].geo.city + ', ' + data.servers[i].geo.country + '</a>');
 			}
 
 		});
